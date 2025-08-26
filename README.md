@@ -21,18 +21,18 @@ git push -u origin main
 
 ```mermaid
 flowchart LR
-  Client[[Client / cURL]] -->|JSON| Ctrls
-  subgraph Rails_App
-    Ctrls[Controllers<br/>Events/Holds/Bookings]
-    Models[Models<br/>Event/Hold/Booking]
-    Job[HoldExpiryJob]
-    Sched[In-process Scheduler<br/>(dev/test only)]
+  Client["Client / cURL"] -->|JSON| Ctrls
+  subgraph RailsApp["Rails App"]
+    Ctrls["Controllers<br/>Events/Holds/Bookings"]
+    Models["Models<br/>Event/Hold/Booking"]
+    Job["HoldExpiryJob"]
+    Sched["In-process Scheduler<br/>(dev/test only)"]
   end
   Ctrls --> Models
-  Models --> DB[(MySQL 8)]
+  Models --> DB[("MySQL 8")]
   Sched --> Job --> Models
-  Idem[Idempotency:<br/>/book returns existing booking by hold_id<br/>Unique index on bookings.hold_id]
-  Ctrls -. guards .-> Idem
+  Idem["Idempotency:<br/>/book returns existing booking by hold_id<br/>Unique index on bookings.hold_id"]
+  Ctrls -.-> Idem
 ```
 
 ### Key modules
